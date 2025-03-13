@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Application.DTOs;
 using ProjectManagement.Application.Services;
@@ -61,6 +62,7 @@ namespace ProjectManagement.Api.Controllers
         // ”казывает, что данный метод обрабатывает HTTP POST-запросы.
         public async Task<ActionResult<ProjectDto>> CreateProject(CreateProjectDto projectDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             await _projectService.AddProjectAsync(projectDto);
             return CreatedAtAction(nameof(GetProject), new { id = projectDto.Id }, projectDto);
             // ¬озвращает HTTP-ответ 201 (Created) с URL созданного проекта.
@@ -70,12 +72,14 @@ namespace ProjectManagement.Api.Controllers
         // ”казывает, что данный метод обрабатывает HTTP PUT-запросы дл€ обновлени€.
         public async Task<IActionResult> UpdateProject(int id, CreateProjectDto projectDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             if (id != projectDto.Id) return BadRequest();
             await _projectService.UpdateProjectAsync(projectDto);
             return NoContent();
             // ¬озвращает HTTP-ответ 204 (No Content) после успешного обновлени€.
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         // ”казывает, что данный метод обрабатывает HTTP DELETE-запросы.
         public async Task<IActionResult> DeleteProject(int id)

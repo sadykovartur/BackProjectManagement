@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace ProjectManagement.Domain.Entities
 {
-    public class User
+    public class User : IdentityUser
     {
-        public string Id { get; set; } // PK
-        public string Name { get; set; }
+        //public string Name { get; set; }
+
+        // Вы можете добавить дополнительные свойства, если это необходимо.
     }
 }

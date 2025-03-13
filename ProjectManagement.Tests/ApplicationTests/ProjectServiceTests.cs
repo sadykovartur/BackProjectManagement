@@ -12,12 +12,14 @@ namespace ProjectManagement.Tests.ApplicationTests
     public class ProjectServiceTests
     {
         private readonly Mock<IProjectRepository> _mockProjectRepository;
+        private readonly Mock<ITaskRepository> _mockTaskRepository;
         private readonly ProjectService _projectService;
 
         public ProjectServiceTests()
         {
             _mockProjectRepository = new Mock<IProjectRepository>();
-            _projectService = new ProjectService(_mockProjectRepository.Object);
+            _mockTaskRepository = new Mock<ITaskRepository>();
+            _projectService = new ProjectService(_mockProjectRepository.Object, _mockTaskRepository.Object);
         }
 
         [Fact]
@@ -39,5 +41,6 @@ namespace ProjectManagement.Tests.ApplicationTests
             Assert.Equal(2, result.Count());
             Assert.Equal("Project 1", result.First().Title);
         }
+               
     }
 }
